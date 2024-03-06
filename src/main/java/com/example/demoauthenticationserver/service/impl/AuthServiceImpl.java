@@ -7,6 +7,8 @@ import com.example.demoauthenticationserver.repository.UserRepository;
 import com.example.demoauthenticationserver.service.AuthService;
 import com.example.demoauthenticationserver.util.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +22,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public SignupResponse signup(SignupRequest request) {
         User user = signupRequestToUserMapper.map(request);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
 
         return SignupResponse.builder()
