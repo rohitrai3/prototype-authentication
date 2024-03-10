@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -30,6 +31,12 @@ public class AuthServiceImpl implements AuthService {
         return SignupResponse.builder()
                 .username(user.getUsername())
                 .build();
+    }
+
+    @Override
+    public RedirectView login(Long id) {
+
+        return new RedirectView("http://localhost:8080/authorize/continue/" + id);
     }
 
 }
